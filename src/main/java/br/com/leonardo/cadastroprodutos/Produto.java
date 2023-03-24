@@ -44,6 +44,9 @@ public class Produto {
     @OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST)
     private Set<CaracteristicaProduto> caracteristicas = new HashSet<CaracteristicaProduto>();
 
+    private Produto() {
+    }
+
     public Produto(@NotBlank String nome,
                    @Positive int quantidade,
                    @NotBlank @Length String descricao,

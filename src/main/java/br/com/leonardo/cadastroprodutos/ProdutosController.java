@@ -31,6 +31,7 @@ public class ProdutosController {
     public String cria(@RequestBody @Valid NovoProdutoRequest request) {
         Usuario dono = usuarioRepository.findByEmail("leonardo@deveficiente.com.br").get();
         Produto produto = request.toModel(manager, dono);
+        manager.persist(produto);
         return produto.toString();
     }
 }

@@ -3,6 +3,7 @@ package br.com.leonardo.cadastroprodutos;
 import br.com.leonardo.cadastrocategorias.Categoria;
 import br.com.leonardo.cadastrousuario.Usuario;
 import br.com.leonardo.compartilhado.ExistsId;
+import br.com.leonardo.compartilhado.UniqueValue;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -20,6 +21,7 @@ import java.util.Set;
 public class NovoProdutoRequest {
 
     @NotBlank
+    @UniqueValue(domainClass = Produto.class, fieldName = "nome")
     private String nome;
     @Positive
     private int quantidade;

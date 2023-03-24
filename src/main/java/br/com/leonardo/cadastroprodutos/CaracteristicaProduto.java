@@ -15,10 +15,13 @@ public class CaracteristicaProduto {
     private String nome;
     @NotBlank
     private String descricao;
-    @NotBlank
+    @NotNull
     @Valid
     @ManyToOne
     private Produto produto;
+
+    private CaracteristicaProduto() {
+    }
 
     public CaracteristicaProduto(@NotBlank String nome, @NotBlank String descricao, @NotNull @Valid Produto produto) {
         this.nome = nome;
