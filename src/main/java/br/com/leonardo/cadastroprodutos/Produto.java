@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Vector;
 import java.util.stream.Collectors;
 
 @Entity
@@ -43,6 +44,8 @@ public class Produto {
     private Usuario dono;
     @OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST)
     private Set<CaracteristicaProduto> caracteristicas = new HashSet<CaracteristicaProduto>();
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<ImagemProduto> imagens = new HashSet<>();
 
     private Produto() {
     }
@@ -64,6 +67,11 @@ public class Produto {
                 .collect(Collectors.toSet());
         this.caracteristicas.addAll(novasCaracteristicas);
         Assert.isTrue(this.caracteristicas.size() >= 3, "Todo produto precisa ter no mínimo 3 caracteristicas");
+    }
+
+    public void associaImagens(Set<String> links) {
+        Set<ImagemProduto> imagens = links.stream().map(link -> new ImagemProduto(this, link)).collect(Collectors.toSet());
+        this.imagens.addAll(imagens);
     }
 
     @Override
@@ -92,6 +100,7 @@ public class Produto {
                 ", categoria=" + categoria +
                 ", dono=" + dono +
                 ", caracteristicas=" + caracteristicas +
+                ", imagens=" + imagens +
                 '}';
     }
 }
