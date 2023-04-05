@@ -103,4 +103,8 @@ public class Produto {
                 ", imagens=" + imagens +
                 '}';
     }
+
+    public boolean pertenceAoUsuario(Usuario possivelDono) {
+        return this.dono.equals(possivelDono);
+    }
 }

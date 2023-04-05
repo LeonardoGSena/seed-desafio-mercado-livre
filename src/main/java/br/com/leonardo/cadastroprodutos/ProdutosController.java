@@ -6,9 +6,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 
@@ -53,8 +55,15 @@ public class ProdutosController {
          * 4- preciso carregar o produto
          * 5- depois de associar, eu preciso atualizar a nova versao do produto
          */
-        Set<String> links = uploaderFake.envia(request.getImagens());
+
+        Usuario dono = usuarioRepository.findByEmail("leonardo@deveficiente.com.br").get();
         Produto produto = manager.find(Produto.class, id);
+
+        if (!produto.pertenceAoUsuario(dono)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        Set<String> links = uploaderFake.envia(request.getImagens());
         produto.associaImagens(links);
 
         manager.merge(produto);
