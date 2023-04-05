@@ -44,4 +44,8 @@ public class Usuario {
                 ", senha='" + senha + '\'' +
                 '}';
     }
+
+    public String getEmail() {
+        return this.email;
+    }
 }
