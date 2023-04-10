@@ -45,6 +45,40 @@ public class Opiniao {
         this.consumidor = consumidor;
     }
 
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public int getNota() {
+        return nota;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Opiniao opiniao = (Opiniao) o;
+
+        if (titulo != null ? !titulo.equals(opiniao.titulo) : opiniao.titulo != null) return false;
+        if (descricao != null ? !descricao.equals(opiniao.descricao) : opiniao.descricao != null) return false;
+        if (produto != null ? !produto.equals(opiniao.produto) : opiniao.produto != null) return false;
+        return consumidor != null ? consumidor.equals(opiniao.consumidor) : opiniao.consumidor == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = titulo != null ? titulo.hashCode() : 0;
+        result = 31 * result + (descricao != null ? descricao.hashCode() : 0);
+        result = 31 * result + (produto != null ? produto.hashCode() : 0);
+        result = 31 * result + (consumidor != null ? consumidor.hashCode() : 0);
+        return result;
+    }
+
     @Override
     public String toString() {
         return "Opiniao{" +
@@ -56,4 +90,6 @@ public class Opiniao {
                 ", consumidor=" + consumidor +
                 '}';
     }
+
+
 }

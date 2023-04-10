@@ -1,8 +1,17 @@
 package br.com.leonardo.cadastroprodutos;
 
+import br.com.leonardo.adicionaopniao.Opiniao;
+import br.com.leonardo.adicionapergunta.Pergunta;
 import br.com.leonardo.cadastrocategorias.Categoria;
 import br.com.leonardo.cadastrousuario.Usuario;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,10 +21,9 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
+import java.util.function.Function;
+import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 @Entity
@@ -46,6 +54,11 @@ public class Produto {
     private Set<CaracteristicaProduto> caracteristicas = new HashSet<CaracteristicaProduto>();
     @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
     private Set<ImagemProduto> imagens = new HashSet<>();
+    @OneToMany(mappedBy = "produto")
+    @OrderBy("titulo desc")
+    private Set<Pergunta> perguntas = new HashSet<>();
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<Opiniao> opinioes = new HashSet<>();
 
     private Produto() {
     }
@@ -110,5 +123,37 @@ public class Produto {
 
     public Usuario getDono() {
         return this.dono;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public Set<CaracteristicaProduto> getCaracteristicas() {
+        return caracteristicas;
+    }
+
+    public <T> Set<T> mapeiaCaracteristicas(Function<CaracteristicaProduto, T> funcaoMapeadora) {
+        return this.caracteristicas.stream().map(funcaoMapeadora).collect(Collectors.toSet());
+    }
+
+    public <T> Set<T> mapeiaImagens(Function<ImagemProduto, T> funcaoMapeadora) {
+        return this.imagens.stream().map(funcaoMapeadora).collect(Collectors.toSet());
+    }
+
+    public <T> Set<T> mapeiaPerguntas(Function<Pergunta, T> funcaoMapeadora) {
+        return this.perguntas.stream().map(funcaoMapeadora).collect(Collectors.toSet());
+    }
+
+    public Opinioes getOpinioes() {
+        return new Opinioes(this.opinioes);
     }
 }
