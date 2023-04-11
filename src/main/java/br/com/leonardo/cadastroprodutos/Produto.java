@@ -4,14 +4,7 @@ import br.com.leonardo.adicionaopniao.Opiniao;
 import br.com.leonardo.adicionapergunta.Pergunta;
 import br.com.leonardo.cadastrocategorias.Categoria;
 import br.com.leonardo.cadastrousuario.Usuario;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
+import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,9 +14,10 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Function;
-import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 @Entity
@@ -155,5 +149,14 @@ public class Produto {
 
     public Opinioes getOpinioes() {
         return new Opinioes(this.opinioes);
+    }
+
+    public boolean abateEstoque(@Positive int quantidade) {
+        Assert.isTrue(quantidade > 0, "A quantidade deve ser maior que 0 para abater do estoque " + quantidade);
+        if (quantidade <= this.quantidade) {
+            this.quantidade-=quantidade;
+            return true;
+        }
+        return false;
     }
 }
